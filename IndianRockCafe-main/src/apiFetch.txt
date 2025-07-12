@@ -1,0 +1,42 @@
+import axios from 'axios';
+import React, { useEffect, useState } from 'react'
+
+const App = () => {
+
+  const [menuItems , setMenuItems ] = useState([]);
+
+  useEffect(()=> {
+    try{
+      const fetchData = async ()=> {
+        const res = await axios.get('https://www.themealdb.com/api/json/v1/1/search.php?f=b');
+        const data = await res.data
+        console.log(data);
+        setMenuItems(data.meals)
+      }
+      fetchData();
+    }catch(err){
+      console.log("There is an error : ", err);
+    }
+  }, [])
+
+  return (
+    <div>App
+
+      {
+        menuItems &&
+        menuItems.map((menu, id) => {
+          return(
+            <ul key={id}>
+              <li>{menu.strMeal}</li>
+              <li><img src={menu.strMealThumb} alt="" /></li>
+            </ul>
+            
+          )
+        })
+      }
+
+    </div>
+  )
+}
+
+export default App
